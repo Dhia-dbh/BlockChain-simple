@@ -53,11 +53,31 @@ class Block:
    
    def isBlockMined(self) -> bool:
       return self.nounce is not None
+
+   def isBlockValid(self) -> bool:
+      if not self.isBlockMined():
+         return False
+      return self._isNounceValid(self.nounce)
    
 
-
+class BlockChain():
+   def __init__(self):
+      self.chain = []
+   
+   def addBlock(self, block: Block) -> bool:
+      if not block.isBlockValid():
+         return False
+      self.chain.append(block)
+      return True
+   def getLastBlock(self) -> Block | None:
+      if len(self.chain) == 0:
+         raise Exception("No blocks in the chain")
+      return self.chain[-1]
    
 if __name__ == "__main__":
+
+
+   print ("+" *4 + "Creating and mining a block..." + "+" *4)
    block = Block("This is really me sending money. source: Trust me bro",
                  "Dhia",
                  "SOS_Tunisia", difficulty=5)
@@ -67,3 +87,12 @@ if __name__ == "__main__":
       print(f"Mined Block with Nounce: {nounce}, Hash: {hash}")
    else:
       print("Failed to mine the block within the maximum nounce search limit.")
+
+
+   print ("+" *4 + f"Creating Blockchain and adding the mined block..." + "+" *4)
+   
+   blockchain = BlockChain()
+   if blockchain.addBlock(block):
+      print("Block added to the blockchain.")
+   else:
+      print("Failed to add block to the blockchain.")
