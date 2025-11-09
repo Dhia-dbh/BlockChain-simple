@@ -55,7 +55,19 @@ class Block:
       return self.nounce is not None
    
 
-
+class BlockChain():
+   def __init__(self):
+      self.chain = []
+   
+   def addBlock(self, block: Block) -> bool:
+      if not block.isBlockMined():
+         return False
+      self.chain.append(block)
+      return True
+   def getLastBlock(self) -> Block | None:
+      if len(self.chain) == 0:
+         return None
+      return self.chain[-1]
    
 if __name__ == "__main__":
    block = Block("This is really me sending money. source: Trust me bro",
